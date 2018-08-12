@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>没有模板引擎的时代</title>
+</head>
+<table id="table">
+  <tr>
+    <td>1</td>
+    <td>张三</td>
+    <td>男</td>
+    <td>12</td>
+    <td>1995-10-15</td>
+  </tr>
+</table>
+
+<body>
+  <!-- 下面这个标签就是一个保存了字符串的容器 -->
+  <script type="text/template" id="tmp">
+    {{each list as value index}}
+    <tr>
+      <td>{{value.id}}</td>
+      <td>{{value.name}}</td>
+      {{if value.gender === 1}}
+      <td>男</td>
+      {{else}}
+      <td>女</td>
+      {{/if}}
+      <td>{{value.age}}</td>
+      <td>{{value.birthday}}</td>
+    </tr>
+    {{/each}}
+  </script>
+  <script src="../node_modules/art-template/dist/template.js"></script>
+  <script>
+  var list = [{
+    id: 1,
+    name: '张三',
+    age: 18,
+    gender: 1,
+    birthday: '1995-10-15'
+  }, {
+    id: 2,
+    name: '张三',
+    age: 18,
+    gender: 1,
+    birthday: '1995-10-15'
+  }, {
+    id: 3,
+    name: '张三',
+    age: 18,
+    gender: 1,
+    birthday: '1995-10-15'
+  }, {
+    id: 4,
+    name: '张三',
+    age: 18,
+    gender: 0,
+    birthday: '1995-10-15'
+  }, {
+    id: 5,
+    name: '张三',
+    age: 18,
+    gender: 1,
+    birthday: '1995-10-15'
+  }]
+
+
+
+  // 下面这种写法，可以使用一个 script 标签来替换，但是必须要将 script 标签的 type 类型改为
+  // 只要不是 text/javascript 就可以
+  // 目的就是在于不要让浏览器把这个标签里面的字符串当作 js 来解析
+  // 就是一个保存字符串的容器，而且也不会被渲染到 DOM 上
+  // var tmpStr = '{{each list as value index}} <tr><td>{{ value.id }}</td><td>{{ value.name }}</td><td>{{ if value.gender === 1 }}  <td>男</td> {{else}} <td>女</td> {{/if}} </td><td>{{ value.age }}</td><td>{{ value.birthday }}</td></tr> {{/each}}'
+
+
+  // 获取 script 标签容器中的字符串
+  var tmpStr = document.getElementById('tmp').innerHTML
+  console.log(tmpStr)
+  var render = template.compile(tmpStr)
+  var result = render({
+    list: list
+  })
+  document.getElementById('table').innerHTML = result
+
+
+  // var oTable = document.getElementById('table')
+  // var result = ''
+  // list.forEach(function(person, index) {
+  var tr = '<tr>'
+  tr += '<td>' + person.id + '</td>'
+  tr += '<td>' + person.name + '</td>'
+  tr += '<td>' + person.age + '</td>'
+
+  // var tr = '  <tr>\n' +
+  //   '  <td></td>\n' +
+  //   '  <td></td>\n' +
+  //   '  <td></td>\n' +
+  //   '  </tr>'
+
+  // var tr = `
+  // <tr>
+  // <td></td>
+  // <td></td>
+  // <td></td>
+  // </tr>
+  // `
+
+  if (person.gender === 1) {
+    tr += '<td>男</td>'
+  } else {
+    tr += '<td>女</td>'
+  }
+
+  tr += '<td>' + person.birthday + '</td>'
+  tr += '</tr>'
+  result += tr
+    // })
+    // oTable.innerHTML = result
+  </script>
+</body>
+
+</html>
+var a = 'aaa' var foo = 'bar'+a+'hello'

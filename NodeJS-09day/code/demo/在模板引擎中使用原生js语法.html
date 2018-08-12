@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>没有模板引擎的时代</title>
+</head>
+<table id="table">
+  <tr>
+    <td>1</td>
+    <td>张三</td>
+    <td>男</td>
+    <td>12</td>
+    <td>1995-10-15</td>
+  </tr>
+</table>
+
+<body>
+  <!-- 
+   在 artTemplate 中使用原生 js 语法
+   1. 引用属性，编码输出  <%= 属性名 %>
+   2. 不编码输出
+   3. 逻辑，所有的逻辑中都使用 <% 原生的js语法 %>
+   -->
+   <!-- hello <%= foo %>
+    hello <%=# foo %>
+    <% if(isTrue) { %>
+      是真的
+    <% } else { %>
+      是假的 <%=# foo %>
+    <% }%> -->
+  <script type="text/template" id="tmp">
+    <% var title = '中秋团圆' %>
+    <% list.forEach(function(item, index){%>
+      <tr>
+        <td><%= item.id %></td>
+        <td><%= item.name %></td>
+        <% if(item.gender === 1){ %>
+          <td>男</td>
+        <%} else {%>
+          <td>女</td>
+        <%} %>
+        <td><%= item.age %></td>
+        <td><%= item.birthday %></td>
+      </tr>
+    <%}) %>
+    <h1><%= title %></h1>
+  </script>
+  <script src="../node_modules/art-template/dist/template-native.js"></script>
+  <script>
+
+  // var data = {
+  //   foo: '<h1>hello world</h1>',
+  //   isTrue: false
+  // }
+
+  
+
+
+  var list = [{
+    id: 1,
+    name: '张三',
+    age: 18,
+    gender: 1,
+    birthday: '1995-10-15'
+  }, {
+    id: 2,
+    name: '张三',
+    age: 18,
+    gender: 1,
+    birthday: '1995-10-15'
+  }, {
+    id: 3,
+    name: '张三',
+    age: 18,
+    gender: 1,
+    birthday: '1995-10-15'
+  }, {
+    id: 4,
+    name: '张三',
+    age: 18,
+    gender: 0,
+    birthday: '1995-10-15'
+  }, {
+    id: 5,
+    name: '张三',
+    age: 18,
+    gender: 1,
+    birthday: '1995-10-15'
+  }]
+
+  var render = template.compile(document.getElementById('tmp').innerHTML)
+
+  var result = render({
+    list: list
+  })
+
+  console.log(result)
+  </script>
+</body>
+
+</html>
