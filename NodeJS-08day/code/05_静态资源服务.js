@@ -1,0 +1,43 @@
+const http = require('http')
+const fs = require('fs')
+const path = require('path')
+const mime = require('mime')
+
+http
+  .createServer((req, res) => {
+    // /assets/main.css
+    // /README.md
+    // /assets/index.html
+    // /img/请求和响应.png
+    let url = decodeURI(req.url)
+
+    if (url === '/favicon.ico') {
+      return res.end()
+    }
+
+    let staticPath = path.join(__dirname, url)
+    let stats = fs.statSync(staticPath)
+    if (stats.isDirectory()) {
+      res.end()
+    } else if (stats.isFile()) {
+      fs.readFile(staticPath, (err, data) => {
+        if (err) {
+          return res.end('404 Not Found.')
+        }
+        // 根据文件后缀名去设定不同的 MIME 类型
+
+        let mimeType = mime.lookup(staticPath)
+
+        mimeType = mimeType.startsWith('text/') ?
+          mimeType + '; charset=utf-8' : mimeType
+
+        res.writeHead(200, {
+          'Content-Type': mimeType
+        })
+        res.end(data)
+      })
+    }
+  })
+  .listen(3000, () => {
+    console.log('server is runnig')
+  })

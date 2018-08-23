@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <!-- 
+
+    该路径是如果是在 http 服务中 ：
+        那么该路径就相对于当前页面的路由路径而言的
+        http://127.0.0.1:3000/
+    在 file 协议中，是相对于你的静态文件而言的
+
+    后台会告诉你，你把静态资源放到哪个目录下就可以被访问了
+    后台哥哥也会告诉你：通过哪个路径前缀就可以访问到你的静态资源了
+  -->
+  <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="page-header">
+      <h1><a href="/">我的音乐</a> <small>首页</small></h1>
+    </div>
+    <a class="btn btn-success" href="/add">添加歌曲</a>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>编号</th>
+          <th>标题</th>
+          <th>歌手</th>
+          <th>音乐名称</th>
+          <th>海报</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+      <!-- 后台渲染 -->
+        {{ each musicList as value index }}
+          <tr>
+            <td>{{ value.id }}</td>
+            <td>{{ value.title }}</td>
+            <td>{{ value.singer }}</td>
+            <td>{{ value.musicFileName }}</td>
+            <td>
+              <img src="uploads/{{ value.posterFileName }}" alt="">
+            </td>
+            <td>
+              <a href="/edit">修改</a>
+              <a href="#">删除</a>
+            </td>
+          </tr>
+        {{ /each }}
+      </tbody>
+    </table>
+  </div>
+  <script src="/node_modules/jquery/dist/jquery.js"></script>
+  <script>
+  </script>
+</body>
+
+</html>

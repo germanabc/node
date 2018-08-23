@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <div id="container">
+    
+  </div>
+  <!-- 
+  模板语法：
+    1. 属性引用 {{ 属性名 }} ，如果值里面有 html 字符串，会进行编码输出
+    2. {{# 属性名 }} 不编码输出
+    3. 条件表达式
+    4. 遍历表达式
+   -->
+  <script type="text/template" id="test">
+    hello {{ title }}
+    {{# bubianma }}
+    {{ if isTrue }}
+      <h1>一级标题</h1>
+    {{ else }}
+      <h2>二级标题</h2>
+    {{ /if }}
+
+    <ul>
+      {{ each list as value index }}
+        <li>{{ index }} : {{ value }}</li>
+      {{ /each }}
+    </ul>
+
+    <table>
+      {{ each arr as value index }}
+      <tr>
+        <td>{{ value.name }}</td>
+        <td>{{ value.age }}</td>
+      </tr>
+      {{ /each }}
+    </table>
+    <hr>
+    <table>
+      {{ each arr }}
+      <tr>
+        <td>{{ $value.name }}</td>
+        <td>{{ $value.age }}</td>
+      </tr>
+      {{ /each }}
+    </table>
+  </script>
+  <script src="node_modules/art-template/dist/template.js"></script>
+  <script>
+    // 使用 node 安装的 artTemplate 这个库，在 dist 目录
+    // template.js 支持的是 {{  }} 这样的表达式语法
+    // template-native.js 支持的是 <% %> 这样的表达式语法
+    // var data = {
+    //   title: '<h1> jack </h1>',
+    //   bubianma: '<h1> jack </h1>',
+    //   isTrue: false,
+    //   list: [
+    //     'apple', 'orange', 'banana'
+    //   ],
+    //   arr: [
+    //     { name: 'jack', age: 18 },
+    //     { name: 'rose', age: 23 },
+    //     { name: 'mike', age: 16 },
+    //     { name: 'tom', age: 22 }
+    //   ]
+    // }
+
+    // 为什么传这个 DOM 元素的 id
+    // 实际上，artTemplate 模板引擎会取根据这个 id 去获取该标签里面的 innerHTML
+    // 拿到模板字符串之后，将 data 数据和 模板字符串替换拼接
+    // var str = template('test', data)
+
+    // console.log(str)
+
+    
+    // document.getElementById('container').innerHTML = str
+
+    // ========================================================
+
+
+    // 模板引擎的本质就是在操作字符串
+    // 和 DOM 没有任何关系
+    // 也就是说 模板引擎既可以在前端使用，也可以在后台使用
+    var tmpStr = `
+      hello {{ title }}
+      {{ each list }}
+        <li>{{ $value }}</li>
+      {{ /each }}
+    `
+
+    // 调用template.compile方法，传入模板字符串
+    // 返回一个 render 渲染函数
+    var render = template.compile(tmpStr)
+
+    // 调用 render 渲染函数，传入要注入模板字符串中的数据对象
+    // 得到解析替换过后的字符串
+    var result = render({
+      title: 'world',
+      list: [
+        'apple', 'orange', 'banana'
+      ]
+    })
+
+    console.log(result)
+
+
+
+  </script>
+</body>
+</html>
+  

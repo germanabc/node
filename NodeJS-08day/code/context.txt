@@ -1,0 +1,104 @@
+
+
+- curl -v 127.0.0.1:3000
+
+* Rebuilt URL to: 127.0.0.1:3000/
+* About to connect() to 127.0.0.1 port 3000 (#0)
+*   Trying 127.0.0.1...
+* Adding handle: conn: 0x2604810  第一个握手发送的一个信号
+* Adding handle: send: 0 第二个发送的信号
+* Adding handle: recv: 0 接收到的信号
+* Curl_addHandleToPipeline: length: 1
+* - Conn 0 (0x2604810) send_pipe: 1, recv_pipe: 0
+* Connected to 127.0.0.1 (127.0.0.1) port 3000 (#0)
+
+星号部分表示就通过 TCP/IP 三次握手建立连接
+
+curl 工具将你输入的 url 地址按照 HTTP 协议，将 url 地址包装成 HTTP 请求报文，
+然后通过 TCP/IP 传输层 将请求报文数据发送给服务器
+
+> GET / HTTP/1.1
+> User-Agent: curl/7.33.0
+> Host: 127.0.0.1:3000
+> Accept: */*
+>
+
+
+大于号开头部分都是请求报文内容：
+
+- 请求报文
+  + 请求头
+    * 请求首行
+      - 请求方法：GET POST DELETE PUT
+      - 请求路径：/ /index.html /main.css 所有的请求路径都以 / 开头
+      - 协议版本：HTTP/1.1
+    * 请求首部字段
+  + 回车换行
+  + 请求体
+    * 只有 POST 请求才有请求体
+    * 请求体中一般用于上传提交大量的数据
+    * 请求体一定是在请求头的回车换行之后
+  
+
+```
+GET / HTTP/1.1
+User-Agent: curl/7.33.0
+Host: 127.0.0.1:3000
+Accept: */*
+\r\n
+```
+
+HTTP 客户端将以上包装好的请求报文内容，通过 TCP/IP 传输层，将该内容发送到具体的服务器计算机。
+
+当后台服务器拿到请求报文内容之后：
+
+将请求报文按照 HTTP 协议（约定好的数据格式）解析出来。
+
+然后根据不同的请求报文内容，作不同的处理。
+
+最后，将要发送的数据内容按照 HTTP 协议包装成 HTTP响应报文。
+通过 TCP/IP 传输层 将该内容发送到客户端。
+
+< HTTP/1.1 200 OK
+< Content-Type: text/html; charset=utf-8
+< Date: Tue, 13 Sep 2016 01:53:01 GMT
+< Connection: keep-alive
+< Content-Length: 20
+<
+<h1>hello world</h1>
+
+
+- 响应报文
+  + 响应头
+    * 响应首行
+      - 协议版本：HTTP/1.1
+      - 状态码
+        + 2xx：表示成功
+        + 3xx：表示重定向
+        + 4xx：表示找不到，属于客户端错误
+        + 5xx：表示服务器错误
+      - 状态短语：例如OK ，给程序员看的，没有实际意义
+    * 响应首部字段
+      - Content-Type：告诉客户端本次响应的数据内容是什么类型
+      - Date：告诉客户端本次响应的时间
+      - Connection：保持连接
+      - Content-Length：告诉客户端我给你发送的数据字节是多大
+  + 回车换行
+  + 响应体
+    * 响应体中就要真正的数据
+
+```
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+Date: Tue, 13 Sep 2016 01:53:01 GMT
+Connection: keep-alive
+Content-Length: 20
+\r\n
+<h1>hello world</h1>
+```
+
+客户端会拿到响应报文数据之后，按照 HTTP 协议解析出来，
+然后做响应的处理。
+
+- 浏览器的本质作用
+
